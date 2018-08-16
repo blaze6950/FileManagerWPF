@@ -1,0 +1,118 @@
+﻿<Window x:Class="FileManagerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileManagerWPF"
+        mc:Ignorable="d"
+        Title="FileManager" Height="350" Width="525">
+    <Window.Resources>
+
+        <GridViewColumn x:Key="DataTemplateForIcon" Header="Icon">
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=Icon}" Stretch="UniformToFill" MaxHeight="25" MaxWidth="25"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+
+        <GridViewColumn x:Key="DataTemplateForName" Header="Name">
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+
+        <GridViewColumn x:Key="DataTemplateForFreeSpace" Header="Free space">
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=FreeSpace}"/>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+
+        <GridViewColumn x:Key="DataTemplateForTotalSize" Header="Total size">
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=TotalSize}"/>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+
+        <GridViewColumn x:Key="DataTemplateForLastWriteTime" Header="Last write time">
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=LastWriteTime}"/>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+
+        <local:TileView x:Key="TileView">
+            <local:TileView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Image Source="{Binding Path=Icon}" Stretch="UniformToFill" MaxHeight="50" MaxWidth="50"/>
+                        <TextBlock Text="{Binding Path=Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </local:TileView.ItemTemplate>
+        </local:TileView>
+
+        <GridView x:Key="GridView">
+            <GridViewColumn Header="Name">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Name}"/>
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+        </GridView>
+
+        <DataTemplate x:Key="DataTemplateTreeViewItemHeader" DataType="local:DirectoryContent">
+            <StackPanel>
+                <Image Source="{Binding Path=Icon}" Stretch="UniformToFill" MaxHeight="10" MaxWidth="10"/>
+                <TextBlock Text="{Binding Path=Name}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="333*"/>
+            <ColumnDefinition Width="184*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ToolBar Grid.Row="0" Grid.ColumnSpan="2">
+            <TextBox Name="TextBox" MinWidth="200" MaxLength="500" MaxLines="1" KeyUp="TextBox_KeyUp"/>
+            <Separator></Separator>
+            <TextBlock VerticalAlignment="Center" Margin="5 0 5 0">View mode:</TextBlock>
+            <ComboBox Name="ComboBox" MinWidth="100" HorizontalContentAlignment="Center" HorizontalAlignment="Center" SelectionChanged="ComboBoxView_SelectionChanged">
+                <ComboBoxItem IsSelected="True" HorizontalContentAlignment="Center">GridView</ComboBoxItem>
+                <ComboBoxItem HorizontalContentAlignment="Center">TileView</ComboBoxItem>
+                <!--<ComboBoxItem HorizontalContentAlignment="Center">ListView</ComboBoxItem>-->
+            </ComboBox>
+            <Separator></Separator>
+            <CheckBox IsChecked="False" Visibility="Hidden">Grouping</CheckBox>
+        </ToolBar>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TreeView Grid.Column="0" Name="TreeView">
+                <!--<TreeView.ItemTemplate>
+                    <DataTemplate DataType="local:DirectoryContent">
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </TreeView.ItemTemplate>-->
+            </TreeView>
+            <ListView Grid.Column="1" Name="ListView" View="{StaticResource GridView}" MouseDoubleClick="ListView_MouseDoubleClick" ></ListView>
+        </Grid>
+    </Grid>
+</Window>
